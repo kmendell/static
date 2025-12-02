@@ -15,11 +15,11 @@ export default defineConfig({
   tiers: [
     {
       title: 'Past Sponsors',
+      monthlyDollars: -1,
       preset: past,
     },
     {
       title: 'Sponsors',
-      monthlyDollars: 1,
       preset: {
         avatar: {
           size: 42,
@@ -47,4 +47,5 @@ export default defineConfig({
   renderer: 'tiers',
   includePastSponsors: true,
   formats: ['svg'],
+  outputDir: '.',
 });
