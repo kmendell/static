@@ -1,0 +1,38 @@
+name: Update Sponsors
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 * * * *" # every hour (UTC)
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - login: kmendell
+            token_secret: SPONSORKIT_TOKEN
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v4
+
+      - name: Set node
+        uses: actions/setup-node@v6
+        with:
+          node-version: latest
+          cache: "pnpm"
+
+      - run: pnpm install
+
+      - name: Update sponsors
+        run: pnpm sponsorkit
+        env:
+          SPONSORKIT_GITHUB_TOKEN: ${{ secrets[matrix.token_secret] }}
+          SPONSORKIT_GITHUB_LOGIN: ${{ matrix.login }}
